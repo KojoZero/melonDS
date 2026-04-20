@@ -40,6 +40,7 @@
 
 class EmuInstance;
 class EmuThread;
+class Cursor;
 
 const int kMaxRecentROMs = 10;
 
@@ -170,6 +171,7 @@ private slots:
     void onChangeIntegerScaling(bool checked);
     void onOpenNewWindow();
     void onChangeScreenFiltering(bool checked);
+    void onChangeHideVirtualCursor(bool checked);
     void onChangeShowOSD(bool checked);
     void onChangeLimitFramerate(bool checked);
     void onChangeAudioSync(bool checked);
@@ -218,7 +220,7 @@ private:
 
     EmuInstance* emuInstance;
     EmuThread* emuThread;
-
+    Cursor* vCursor;
     Config::Table& globalCfg;
     Config::Table& localCfg;
     Config::Table windowCfg;
@@ -297,6 +299,7 @@ public:
     QAction* actNewWindow;
     QAction* actScreenFiltering;
     QAction* actShowOSD;
+    QAction* actHideVirtualCursor;
     QAction* actLimitFramerate;
     QAction* actAudioSync;
 
