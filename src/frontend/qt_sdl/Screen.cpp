@@ -49,8 +49,8 @@
 #include "Shaders/smaa.h"
 #include "Shaders/areasampling.h"
 #include "Shaders/sharpbilinear.h"
-#include "Shaders/smaa_textures/areatex.h"
-#include "Shaders/smaa_textures/searchtex.h"
+#include "Shaders/smaa_textures/AreaTex.h"
+#include "Shaders/smaa_textures/SearchTex.h"
 #include "font.h"
 #include "version.h"
 
