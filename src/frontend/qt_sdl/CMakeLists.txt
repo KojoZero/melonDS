@@ -5,6 +5,13 @@ include(FixInterfaceIncludes)
 set(SOURCES_QT_SDL
     main.cpp
     main_shaders.h
+    shaders/smaa_textures/AreaTex.h
+    shaders/smaa_textures/SearchTex.h
+    shaders/areasampling.h
+    shaders/fxaa.h
+    shaders/sharpbilinear.h
+    shaders/simplepresent.h
+    shaders/smaa.h
     Screen.cpp
     Window.cpp
     EmuInstance.cpp
