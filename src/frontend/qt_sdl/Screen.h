@@ -258,6 +258,7 @@ private:
     GLint i_resolutionULoc, o_resolutionULoc, areaTexULoc, searchTexULoc, smaa_inputULoc, convertColorsULoc;
     void attachScreenUniforms(GLuint shaderProgram);
 
+    float maxAniso;
 
 
     QMutex screenSettingsLock;

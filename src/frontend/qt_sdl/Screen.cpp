@@ -1180,6 +1180,9 @@ void ScreenPanelGL::initOpenGL()
 
     transferLayout();
     glInited = true;
+    if (GLAD_GL_EXT_texture_filter_anisotropic) {
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+    }
 }
 
 void ScreenPanelGL::deinitOpenGL()
