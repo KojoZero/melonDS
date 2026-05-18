@@ -1210,7 +1210,7 @@ void main()
                     texcolor = uvec4(texture(Capture256Texture, vec3(uvf, polygon.TextureLayer)) * vec4(63,63,63,31));
             }
             else
-                texcolor = texture(CurrentTexture, vec3(uvf, polygon.TextureLayer));
+                texcolor = uvec4(round(texture(CurrentTexture, vec3(uvf, polygon.TextureLayer)) * 255.0));
 
 #ifdef Decal
             if (texcolor.a == 31)

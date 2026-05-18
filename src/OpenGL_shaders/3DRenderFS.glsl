@@ -60,7 +60,7 @@ vec4 FinalColor()
         vec3 texcoord = vec3(fTexcoord, fPolygonAttr.y);
         vec4 tcol;
         if (fPolygonAttr.z == 0)
-            tcol = (vec4(texture(CurTexture, texcoord)) * 255.0) / vec4(63,63,63,31);
+            tcol = round((vec4(texture(CurTexture, texcoord)) * 255.0)) / vec4(63,63,63,31);
         else if (fPolygonAttr.z == 1)
             tcol = texture(Capture128Texture, texcoord);
         else
