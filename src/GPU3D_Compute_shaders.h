@@ -1062,7 +1062,7 @@ const std::string Rasterise =
 
 layout (local_size_x = TileSize, local_size_y = TileSize) in;
 
-layout (binding = 0) uniform usampler2DArray CurrentTexture;
+layout (binding = 0) uniform sampler2DArray CurrentTexture;
 layout (binding = 1) uniform sampler2DArray Capture128Texture;
 layout (binding = 2) uniform sampler2DArray Capture256Texture;
 

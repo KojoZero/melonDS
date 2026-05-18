@@ -1,6 +1,6 @@
 #version 140
 
-uniform usampler2DArray CurTexture;
+uniform sampler2DArray CurTexture;
 uniform sampler2DArray Capture128Texture;
 uniform sampler2DArray Capture256Texture;
 
