@@ -36,7 +36,7 @@ public:
     bool Init() override;
     void Reset() override;
 
-    void SetRenderSettings(int scale, bool betterpolygons) noexcept;
+    void SetRenderSettings(int scale, bool betterpolygons, bool mipmapEnabled, int anisoFilterMultiplier) noexcept;
     void SetBetterPolygons(bool betterpolygons) noexcept;
     void SetScaleFactor(int scale) noexcept;
     [[nodiscard]] bool GetBetterPolygons() const noexcept { return BetterPolygons; }
@@ -156,6 +156,9 @@ private:
 
     int ScaleFactor {};
     bool BetterPolygons {};
+    bool MipmapEnabled {};
+    int AnisoFilterSetting {};
+    int MaxAniso {};
     int ScreenW {}, ScreenH {};
 
     GLuint ColorBufferTex {}, DepthBufferTex {}, AttrBufferTex {};

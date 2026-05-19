@@ -828,6 +828,12 @@ struct RendererSettings
 
     // "improved polygon splitting" (regular OpenGL renderer)
     bool BetterPolygons;
+
+    // Whether to generate mipmaps for textures on 3d objects
+    bool MipmapEnabled;
+
+    // Requested Anisotropic Filtering Setting Index.
+    int AnisoFilterMultiplier;
 };
 
 class Renderer

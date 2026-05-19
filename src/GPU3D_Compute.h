@@ -43,7 +43,7 @@ public:
     bool Init() override;
     void Reset() override;
 
-    void SetRenderSettings(int scale, bool highResolutionCoordinates);
+    void SetRenderSettings(int scale, bool highResolutionCoordinates, bool mipmapEnabled, int anisoFilterMultiplier);
 
     void RenderFrame() override;
     void RestartFrame() override;
@@ -218,7 +218,9 @@ private:
     int ScaleFactor = -1;
     int MaxWorkTiles;
     bool HiresCoordinates;
-
+    bool MipmapEnabled;
+    int AnisoFilterSetting;
+    int MaxAniso = 0;
     int ShaderStepIdx = 0;
 
     void DeleteShaders();

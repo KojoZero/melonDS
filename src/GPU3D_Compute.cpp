@@ -26,6 +26,7 @@
 #include "OpenGLSupport.h"
 
 #include "GPU3D_Compute_shaders.h"
+#include <cmath>
 
 namespace melonDS
 {
@@ -190,6 +191,11 @@ void blah(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length
 
 bool ComputeRenderer3D::Init()
 {
+    if (GLAD_GL_EXT_texture_filter_anisotropic){
+        float tempAniso = 1;
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &tempAniso);
+        MaxAniso = tempAniso;
+    }
     //glDebugMessageCallback(blah, NULL);
     //glEnable(GL_DEBUG_OUTPUT);
     glGenBuffers(1, &YSpanSetupMemory);
@@ -320,7 +326,7 @@ void ComputeRenderer3D::Reset()
     ClearBitmapDirty = 0x3;
 }
 
-void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordinates)
+void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordinates, bool mipmapEnabled, int anisoFilterMultiplier)
 {
     u8 TileScale;
 
@@ -332,6 +338,8 @@ void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordina
     ShaderStepIdx = 0;
 
     ScaleFactor = scale;
+    MipmapEnabled = mipmapEnabled;
+    AnisoFilterSetting = std::pow(2, anisoFilterMultiplier);
     ScreenWidth = 256 * ScaleFactor;
     ScreenHeight = 192 * ScaleFactor;
 
@@ -793,14 +801,9 @@ void ComputeRenderer3D::RenderFrame()
                 bool mirrorT = (polygon->TexParam >> 19) & 1;
                 variant.Sampler = Samplers[(wrapS ? (mirrorS ? 2 : 1) : 0) + (wrapT ? (mirrorT ? 2 : 1) : 0) * 3];
                 
-                bool anisoEnabled = true;
-    
                 glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-                if (anisoEnabled && GLAD_GL_EXT_texture_filter_anisotropic){
-                    float maxAniso;
-                    float requestedAniso;
-                    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
-                    glSamplerParameterf(variant.Sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(maxAniso, requestedAniso));
+                if (AnisoFilterSetting > 1 && GLAD_GL_EXT_texture_filter_anisotropic){
+                    glSamplerParameterf(variant.Sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(MaxAniso, AnisoFilterSetting));
                 }
 
                 if (*textureLastVariant < numVariants && variants[*textureLastVariant] == variant)

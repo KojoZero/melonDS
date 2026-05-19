@@ -21,8 +21,7 @@ void TexcacheOpenGLLoader::UploadTexture(GLuint handle, u32 width, u32 height, u
         width, height, 1,
         GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    Platform::Log(Platform::LogLevel::Info, "Uploaded New Texture\n\n");
-
+    Platform::Log(Platform::LogLevel::Info, "Uploaded New Texture\n");
 
 }
 

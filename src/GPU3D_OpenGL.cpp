@@ -23,6 +23,7 @@
 #include <string.h>
 #include "NDS.h"
 #include "GPU.h"
+#include <cmath>
 
 namespace melonDS
 {
@@ -120,6 +121,12 @@ GLRenderer3D::GLRenderer3D(melonDS::GPU3D& gpu3D, GLRenderer& parent) noexcept :
 bool GLRenderer3D::Init()
 {
     GLint uni_id;
+
+    if (GLAD_GL_EXT_texture_filter_anisotropic){
+        float tempAniso = 1;
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &tempAniso);
+        MaxAniso = tempAniso;
+    }
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_STENCIL_TEST);
@@ -324,16 +331,16 @@ void GLRenderer3D::Reset()
 
 void GLRenderer3D::SetBetterPolygons(bool betterpolygons) noexcept
 {
-    SetRenderSettings(ScaleFactor, betterpolygons);
+    SetRenderSettings(ScaleFactor, betterpolygons, MipmapEnabled, AnisoFilterSetting);
 }
 
 void GLRenderer3D::SetScaleFactor(int scale) noexcept
 {
-    SetRenderSettings(scale, BetterPolygons);
+    SetRenderSettings(scale, BetterPolygons, MipmapEnabled, AnisoFilterSetting);
 }
 
 
-void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons) noexcept
+void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons, bool mipmapEnabled, int anisoFilterMultiplier) noexcept
 {
     if (betterpolygons == BetterPolygons && scale == ScaleFactor)
         return;
@@ -342,6 +349,8 @@ void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons) noexcept
     //CurGLCompositor.SetScaleFactor(scale);
     ScaleFactor = scale;
     BetterPolygons = betterpolygons;
+    MipmapEnabled = mipmapEnabled;
+    AnisoFilterSetting = std::pow(2, anisoFilterMultiplier);
 
     ScreenW = 256 * scale;
     ScreenH = 192 * scale;
@@ -802,14 +811,11 @@ void GLRenderer3D::SetupPolygonTexture(const RendererPolygon* poly) const
         repeatT = (poly->TexRepeat & (1<<3)) ? GL_MIRRORED_REPEAT : GL_REPEAT;
     else
         repeatT = GL_CLAMP_TO_EDGE;
-    bool anisoEnabled = true;
-    
+
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    if (anisoEnabled && GLAD_GL_EXT_texture_filter_anisotropic){
-        float maxAniso;
-        float requestedAniso;
-        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
-        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(maxAniso, requestedAniso));
+    if (AnisoFilterSetting > 1 && GLAD_GL_EXT_texture_filter_anisotropic){
+        Log(LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
+        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(MaxAniso, AnisoFilterSetting));
     }
 
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
