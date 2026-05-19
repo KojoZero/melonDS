@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>514</width>
-    <height>365</height>
+    <height>444</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,27 +32,20 @@
       <string>OpenGL renderer</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Output resampling:</string>
+      <item row="7" column="0">
+       <widget class="QComboBox" name="cbxAnisotropicFiltering">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Greatly enhances the visual quality of textures that are viewed at extreme angles.&lt;/p&gt;&lt;p&gt;This has little performance impact on most devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="cbBetterPolygons">
         <property name="whatsThis">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enabling this may help reduce distortion on quads and more complex polygons, but may also reduce performance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Improved polygon splitting</string>
+         <string/>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_5">
+      <item row="9" column="0">
+       <widget class="QCheckBox" name="cbxComputeHiResCoords">
         <property name="text">
-         <string>Anti-aliasing:</string>
+         <string>Use high resolution coordinates</string>
         </property>
        </widget>
       </item>
@@ -63,10 +56,24 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
-       <widget class="QCheckBox" name="cbxComputeHiResCoords">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Use high resolution coordinates</string>
+         <string>Anti-aliasing:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Output resampling:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Internal resolution:</string>
         </property>
        </widget>
       </item>
@@ -80,13 +87,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Internal resolution:</string>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="0">
        <widget class="QComboBox" name="cbxAntiAliasing">
         <property name="toolTip">
@@ -94,6 +94,36 @@
         </property>
         <property name="whatsThis">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QCheckBox" name="cbEnableMipmapping">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This reduces aliasing of textures that are farther away and increases performance in most games at the cost of using more memory.&lt;/p&gt;&lt;p&gt;In a select few games, this may &lt;span style=&quot; font-weight:700;&quot;&gt;severely degrade &lt;/span&gt;performance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Enable mipmapping</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="cbBetterPolygons">
+        <property name="whatsThis">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enabling this may help reduce distortion on quads and more complex polygons, but may also reduce performance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Improved polygon splitting</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Anisotropic filtering:</string>
         </property>
        </widget>
       </item>

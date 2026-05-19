@@ -49,6 +49,8 @@ void VideoSettingsDialog::setEnabled()
     ui->cbxGLResolution->setEnabled(!softwareRenderer);
     ui->cbxOutputResampling->setEnabled(GLDisplay);
     ui->cbxAntiAliasing->setEnabled(GLDisplay);
+    ui->cbxAnisotropicFiltering->setEnabled(!softwareRenderer);
+    ui->cbEnableMipmapping->setEnabled(!softwareRenderer);
     ui->cbBetterPolygons->setEnabled(renderer == renderer3D_OpenGL);
     ui->cbxComputeHiResCoords->setEnabled(renderer == renderer3D_OpenGLCompute);
 }
@@ -65,12 +67,14 @@ VideoSettingsDialog::VideoSettingsDialog(QWidget* parent) : QDialog(parent), ui(
     oldGLDisplay = cfg.GetBool("Screen.UseGL");
     oldResampling = cfg.GetInt("Screen.Resampling");
     oldAntialiasing = cfg.GetInt("Screen.Antialiasing");
+    oldAnisoFiltering = cfg.GetInt("3D.GL.AnisotropicFiltering");
     oldVSync = cfg.GetBool("Screen.VSync");
     oldVSyncInterval = cfg.GetInt("Screen.VSyncInterval");
     oldSoftThreaded = cfg.GetBool("3D.Soft.Threaded");
     oldGLScale = cfg.GetInt("3D.GL.ScaleFactor");
     oldGLBetterPolygons = cfg.GetBool("3D.GL.BetterPolygons");
     oldHiresCoordinates = cfg.GetBool("3D.GL.HiresCoordinates");
+    oldMipmapping = cfg.GetBool("3D.GL.Mipmapping");
 
     grp3DRenderer = new QButtonGroup(this);
     grp3DRenderer->addButton(ui->rb3DSoftware, renderer3D_Software);
@@ -105,9 +109,11 @@ VideoSettingsDialog::VideoSettingsDialog(QWidget* parent) : QDialog(parent), ui(
     ui->cbxAntiAliasing->setCurrentIndex(oldAntialiasing);
     ui->cbxOutputResampling->addItems({"Nearest", "Bilinear", "Adaptive", "Sharp Bilinear"});
     ui->cbxOutputResampling->setCurrentIndex(oldResampling);
+    ui->cbxAnisotropicFiltering->addItems({"Off", "2x", "4x", "8x", "16x"});
+    ui->cbxAnisotropicFiltering->setCurrentIndex(oldAnisoFiltering);
     ui->cbBetterPolygons->setChecked(oldGLBetterPolygons != 0);
     ui->cbxComputeHiResCoords->setChecked(oldHiresCoordinates != 0);
-
+    ui->cbEnableMipmapping->setChecked(oldMipmapping != 0);
     if (!oldVSync)
         ui->sbVSyncInterval->setEnabled(false);
     setVsyncControlEnable(UsesGL());
@@ -142,12 +148,14 @@ void VideoSettingsDialog::on_VideoSettingsDialog_rejected()
     cfg.SetBool("Screen.UseGL", oldGLDisplay);
     cfg.SetInt("Screen.Resampling", oldResampling);
     cfg.SetInt("Screen.Antialiasing", oldAntialiasing);
+    cfg.SetInt("3D.GL.AnisotropicFiltering", oldAnisoFiltering);
     cfg.SetBool("Screen.VSync", oldVSync);
     cfg.SetInt("Screen.VSyncInterval", oldVSyncInterval);
     cfg.SetBool("3D.Soft.Threaded", oldSoftThreaded);
     cfg.SetInt("3D.GL.ScaleFactor", oldGLScale);
     cfg.SetBool("3D.GL.BetterPolygons", oldGLBetterPolygons);
     cfg.SetBool("3D.GL.HiresCoordinates", oldHiresCoordinates);
+    cfg.SetBool("3D.GL.Mipmapping", oldMipmapping);
 
     emit updateVideoSettings(old_gl != UsesGL());
 
@@ -241,6 +249,13 @@ void VideoSettingsDialog::on_cbxAntiAliasing_currentIndexChanged(int idx)
     emit updateVideoSettings(false);
 }
 
+void VideoSettingsDialog::on_cbxAnisotropicFiltering_currentIndexChanged(int idx)
+{
+    auto& cfg = emuInstance->getGlobalConfig();
+    cfg.SetInt("3D.GL.AnisotropicFiltering", idx);
+
+    emit updateVideoSettings(false);
+}
 
 void VideoSettingsDialog::on_cbBetterPolygons_stateChanged(int state)
 {
@@ -254,6 +269,14 @@ void VideoSettingsDialog::on_cbxComputeHiResCoords_stateChanged(int state)
 {
     auto& cfg = emuInstance->getGlobalConfig();
     cfg.SetBool("3D.GL.HiresCoordinates", (state != 0));
+
+    emit updateVideoSettings(false);
+}
+
+void VideoSettingsDialog::on_cbEnableMipmapping_stateChanged(int state)
+{
+    auto& cfg = emuInstance->getGlobalConfig();
+    cfg.SetBool("3D.GL.Mipmapping", (state != 0));
 
     emit updateVideoSettings(false);
 }

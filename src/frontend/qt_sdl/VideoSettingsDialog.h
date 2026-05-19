@@ -69,9 +69,10 @@ private slots:
     void on_cbxGLResolution_currentIndexChanged(int idx);
     void on_cbxOutputResampling_currentIndexChanged(int idx);
     void on_cbxAntiAliasing_currentIndexChanged(int idx);
+    void on_cbxAnisotropicFiltering_currentIndexChanged(int idx);
     void on_cbBetterPolygons_stateChanged(int state);
     void on_cbxComputeHiResCoords_stateChanged(int state);
-
+    void on_cbEnableMipmapping_stateChanged(int state);
     void on_cbSoftwareThreaded_stateChanged(int state);
 private:
     void setVsyncControlEnable(bool hasOGL);
@@ -86,12 +87,14 @@ private:
     int oldGLDisplay;
     int oldResampling;
     int oldAntialiasing;
+    int oldAnisoFiltering;
     int oldVSync;
     int oldVSyncInterval;
     int oldSoftThreaded;
     int oldGLScale;
     int oldGLBetterPolygons;
     int oldHiresCoordinates;
+    int oldMipmapping;
 };
 
 #endif // VIDEOSETTINGSDIALOG_H

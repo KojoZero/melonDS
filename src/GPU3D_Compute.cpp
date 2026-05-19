@@ -793,22 +793,14 @@ void ComputeRenderer3D::RenderFrame()
                 bool mirrorT = (polygon->TexParam >> 19) & 1;
                 variant.Sampler = Samplers[(wrapS ? (mirrorS ? 2 : 1) : 0) + (wrapT ? (mirrorT ? 2 : 1) : 0) * 3];
                 
-                bool linearFilteringEnabled = false;
                 bool anisoEnabled = true;
     
-                
-                if (linearFilteringEnabled){
-                    glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                } else {
-                    glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-                }
-
-                if (anisoEnabled){
-                    if (GLAD_GL_EXT_texture_filter_anisotropic) {
-                        float maxAniso;
-                        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
-                        glSamplerParameterf(variant.Sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
-                    }
+                glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                if (anisoEnabled && GLAD_GL_EXT_texture_filter_anisotropic){
+                    float maxAniso;
+                    float requestedAniso;
+                    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+                    glSamplerParameterf(variant.Sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(maxAniso, requestedAniso));
                 }
 
                 if (*textureLastVariant < numVariants && variants[*textureLastVariant] == variant)
