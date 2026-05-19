@@ -221,7 +221,7 @@ bool ComputeRenderer3D::Init()
             const GLenum translateWrapMode[3] = {GL_CLAMP_TO_EDGE, GL_REPEAT, GL_MIRRORED_REPEAT};
             glSamplerParameteri(Samplers[i+j*3], GL_TEXTURE_WRAP_S, translateWrapMode[i]);
             glSamplerParameteri(Samplers[i+j*3], GL_TEXTURE_WRAP_T, translateWrapMode[j]);
-            glSamplerParameteri(Samplers[i+j*3], GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glSamplerParameteri(Samplers[i+j*3], GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glSamplerParameteri(Samplers[i+j*3], GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
     }
@@ -792,6 +792,24 @@ void ComputeRenderer3D::RenderFrame()
                 bool mirrorS = (polygon->TexParam >> 18) & 1;
                 bool mirrorT = (polygon->TexParam >> 19) & 1;
                 variant.Sampler = Samplers[(wrapS ? (mirrorS ? 2 : 1) : 0) + (wrapT ? (mirrorT ? 2 : 1) : 0) * 3];
+                
+                bool linearFilteringEnabled = false;
+                bool anisoEnabled = true;
+    
+                
+                if (linearFilteringEnabled){
+                    glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                } else {
+                    glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                }
+
+                if (anisoEnabled){
+                    if (GLAD_GL_EXT_texture_filter_anisotropic) {
+                        float maxAniso;
+                        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+                        glSamplerParameterf(variant.Sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
+                    }
+                }
 
                 if (*textureLastVariant < numVariants && variants[*textureLastVariant] == variant)
                 {

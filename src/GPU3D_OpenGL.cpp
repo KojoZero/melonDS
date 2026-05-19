@@ -803,6 +803,24 @@ void GLRenderer3D::SetupPolygonTexture(const RendererPolygon* poly) const
     else
         repeatT = GL_CLAMP_TO_EDGE;
 
+    bool linearFilteringEnabled = false;
+    bool anisoEnabled = true;
+    
+    if (linearFilteringEnabled){
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    } else {
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
+
+    if (anisoEnabled){
+        if (GLAD_GL_EXT_texture_filter_anisotropic) {
+            float maxAniso;
+            glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+            glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
+        }
+    }
+
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, repeatS);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, repeatT);
 }
