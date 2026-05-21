@@ -883,7 +883,6 @@ void EmuThread::updateRenderer()
         .Threaded = cfg.GetBool("3D.Soft.Threaded"),
         .HiresCoordinates = cfg.GetBool("3D.GL.HiresCoordinates"),
         .BetterPolygons = cfg.GetBool("3D.GL.BetterPolygons"),
-        .MipmapEnabled = cfg.GetBool("3D.GL.Mipmapping"),
         .AnisoFilterMultiplier = cfg.GetInt("3D.GL.AnisotropicFiltering")
     };
 

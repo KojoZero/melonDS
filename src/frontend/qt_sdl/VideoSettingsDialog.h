@@ -72,7 +72,6 @@ private slots:
     void on_cbxAnisotropicFiltering_currentIndexChanged(int idx);
     void on_cbBetterPolygons_stateChanged(int state);
     void on_cbxComputeHiResCoords_stateChanged(int state);
-    void on_cbEnableMipmapping_stateChanged(int state);
     void on_cbSoftwareThreaded_stateChanged(int state);
 private:
     void setVsyncControlEnable(bool hasOGL);
@@ -94,7 +93,6 @@ private:
     int oldGLScale;
     int oldGLBetterPolygons;
     int oldHiresCoordinates;
-    int oldMipmapping;
 };
 
 #endif // VIDEOSETTINGSDIALOG_H

@@ -334,12 +334,12 @@ void GLRenderer::SetRenderSettings(RendererSettings& settings)
     if (IsCompute)
     {
         auto rend3d = dynamic_cast<ComputeRenderer3D *>(Rend3D.get());
-        rend3d->SetRenderSettings(settings.ScaleFactor, settings.HiresCoordinates, settings.MipmapEnabled, settings.AnisoFilterMultiplier);
+        rend3d->SetRenderSettings(settings.ScaleFactor, settings.HiresCoordinates, settings.AnisoFilterMultiplier);
     }
     else
     {
         auto rend3d = dynamic_cast<GLRenderer3D *>(Rend3D.get());
-        rend3d->SetRenderSettings(settings.ScaleFactor, settings.BetterPolygons, settings.MipmapEnabled, settings.AnisoFilterMultiplier);
+        rend3d->SetRenderSettings(settings.ScaleFactor, settings.BetterPolygons, settings.AnisoFilterMultiplier);
     }
 }
 

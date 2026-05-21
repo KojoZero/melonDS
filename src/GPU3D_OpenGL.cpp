@@ -331,16 +331,16 @@ void GLRenderer3D::Reset()
 
 void GLRenderer3D::SetBetterPolygons(bool betterpolygons) noexcept
 {
-    SetRenderSettings(ScaleFactor, betterpolygons, MipmapEnabled, AnisoFilterSetting);
+    SetRenderSettings(ScaleFactor, betterpolygons, AnisoFilterSetting);
 }
 
 void GLRenderer3D::SetScaleFactor(int scale) noexcept
 {
-    SetRenderSettings(scale, BetterPolygons, MipmapEnabled, AnisoFilterSetting);
+    SetRenderSettings(scale, BetterPolygons, AnisoFilterSetting);
 }
 
 
-void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons, bool mipmapEnabled, int anisoFilterMultiplier) noexcept
+void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons, int anisoFilterMultiplier) noexcept
 {
     if (betterpolygons == BetterPolygons && scale == ScaleFactor)
         return;
@@ -349,7 +349,6 @@ void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons, bool mipmap
     //CurGLCompositor.SetScaleFactor(scale);
     ScaleFactor = scale;
     BetterPolygons = betterpolygons;
-    MipmapEnabled = mipmapEnabled;
     AnisoFilterSetting = std::pow(2, anisoFilterMultiplier);
 
     ScreenW = 256 * scale;

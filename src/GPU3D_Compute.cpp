@@ -326,7 +326,7 @@ void ComputeRenderer3D::Reset()
     ClearBitmapDirty = 0x3;
 }
 
-void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordinates, bool mipmapEnabled, int anisoFilterMultiplier)
+void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordinates, int anisoFilterMultiplier)
 {
     u8 TileScale;
 
@@ -338,7 +338,6 @@ void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordina
     ShaderStepIdx = 0;
 
     ScaleFactor = scale;
-    MipmapEnabled = mipmapEnabled;
     AnisoFilterSetting = std::pow(2, anisoFilterMultiplier);
     ScreenWidth = 256 * ScaleFactor;
     ScreenHeight = 192 * ScaleFactor;
