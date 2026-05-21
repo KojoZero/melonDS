@@ -21,6 +21,7 @@ public:
 
 private:
     bool IsCompute;
+    void PremultiplyAlpha(int width, int height, u8* data);
 };
 
 using TexcacheOpenGL = Texcache<TexcacheOpenGLLoader, GLuint>;

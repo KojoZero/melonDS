@@ -811,9 +811,15 @@ void GLRenderer3D::SetupPolygonTexture(const RendererPolygon* poly) const
     else
         repeatT = GL_CLAMP_TO_EDGE;
 
-    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    if (AnisoFilterSetting > 1 && GLAD_GL_EXT_texture_filter_anisotropic){
-        Log(LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
+    bool linearfiltering = true;
+    if (linearfiltering){
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    } else {
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
+
+    if (GLAD_GL_EXT_texture_filter_anisotropic){
+        // Platform::Log(Platform::LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
         glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(MaxAniso, AnisoFilterSetting));
     }
 
@@ -825,10 +831,11 @@ void GLRenderer3D::SetupPolygonTexture(const RendererPolygon* poly) const
 int GLRenderer3D::RenderSinglePolygon(int i) const
 {
     const RendererPolygon* rp = &PolygonList[i];
-
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     SetupPolygonTexture(rp);
     glDrawElements(rp->PrimType, rp->NumIndices, GL_UNSIGNED_SHORT, (void*)(uintptr_t)(rp->IndicesOffset * 2));
-
+    // glDisable(GL_BLEND);
     return 1;
 }
 
@@ -853,9 +860,11 @@ int GLRenderer3D::RenderPolygonBatch(int i) const
         numpolys++;
         numindices += cur_rp->NumIndices;
     }
-
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     SetupPolygonTexture(rp);
     glDrawElements(primtype, numindices, GL_UNSIGNED_SHORT, (void*)(uintptr_t)(rp->IndicesOffset * 2));
+    // glDisable(GL_BLEND);
     return numpolys;
 }
 
@@ -878,9 +887,11 @@ int GLRenderer3D::RenderPolygonEdgeBatch(int i) const
         numpolys++;
         numindices += cur_rp->NumEdgeIndices;
     }
-
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     SetupPolygonTexture(rp);
     glDrawElements(GL_LINES, numindices, GL_UNSIGNED_SHORT, (void*)(uintptr_t)(rp->EdgeIndicesOffset * 2));
+    // glDisable(GL_BLEND);
     return numpolys;
 }
 

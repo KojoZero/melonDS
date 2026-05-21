@@ -13,9 +13,19 @@ GLuint TexcacheOpenGLLoader::GenerateTexture(u32 width, u32 height, u32 layers)
     return texarray;
 }
 
+void TexcacheOpenGLLoader::PremultiplyAlpha(int width, int height, u8* data){
+    for (int i = 0; i < width * height * 4; i += 4) {
+        float a = data[i + 3] / 31.0f;
+        data[i + 0] = (u8)(data[i + 0] * a);
+        data[i + 1] = (u8)(data[i + 1] * a);
+        data[i + 2] = (u8)(data[i + 2] * a);
+    }
+}
+
 void TexcacheOpenGLLoader::UploadTexture(GLuint handle, u32 width, u32 height, u32 layer, void* data)
 {
     glBindTexture(GL_TEXTURE_2D_ARRAY, handle);
+    PremultiplyAlpha(width, height, (u8*) data);
     glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
         0, 0, 0, layer,
         width, height, 1,

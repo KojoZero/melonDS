@@ -69,7 +69,7 @@ vec4 FinalColor()
         if ((blendmode & 1) != 0)
         {
             // decal
-            col.rgb = (tcol.rgb * tcol.a) + (vcol.rgb * (1.0-tcol.a));
+            col.rgb = (tcol.rgb) + (vcol.rgb * (1.0-tcol.a));
             col.a = vcol.a;
         }
         else
@@ -103,7 +103,7 @@ void main()
         if (uRenderMode == 0)
         {
             // opaque pixels
-            if (col.a < 30.5/31) discard;
+            // if (col.a < 30.5/31) discard;
 
             oAttr.r = float((fPolygonAttr.x >> 24) & 0x3F) / 63.0;
             oAttr.g = 0;
