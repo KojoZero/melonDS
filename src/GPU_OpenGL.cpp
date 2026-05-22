@@ -324,7 +324,7 @@ void GLRenderer::PostSavestate()
 void GLRenderer::SetRenderSettings(RendererSettings& settings)
 {
     SetScaleFactor(settings.ScaleFactor);
-
+    Platform::Log(Platform::LogLevel::Info, "GPU_OPENGL_CALLED\n");
     auto rend2d = dynamic_cast<GLRenderer2D*>(Rend2D_A.get());
     rend2d->SetScaleFactor(settings.ScaleFactor);
 

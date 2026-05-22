@@ -80,6 +80,7 @@ RangeList IntRanges =
     {"3D.Renderer", {0, renderer3D_Max-1}},
     {"Screen.VSyncInterval", {1, 20}},
     {"3D.GL.ScaleFactor", {1, 16}},
+    {"3D.GL.AnisotropicFiltering", {0,4}},
     {"Audio.Interpolation", {0, 4}},
     {"Instance*.Audio.Volume", {0, 256}},
     {"Mic.InputType", {0, micInputType_MAX-1}},

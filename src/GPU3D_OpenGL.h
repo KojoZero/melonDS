@@ -156,6 +156,7 @@ private:
 
     int ScaleFactor {};
     bool BetterPolygons {};
+    int AnisoMult {};
     int AnisoFilterSetting {};
     int MaxAniso {};
     int ScreenW {}, ScreenH {};

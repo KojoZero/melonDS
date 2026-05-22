@@ -885,7 +885,7 @@ void EmuThread::updateRenderer()
         .BetterPolygons = cfg.GetBool("3D.GL.BetterPolygons"),
         .AnisoFilterMultiplier = cfg.GetInt("3D.GL.AnisotropicFiltering")
     };
-
+    Platform::Log(Platform::LogLevel::Info, "Current Aniso Mult: %d\n", settings.AnisoFilterMultiplier);
     nds->GetRenderer().SetRenderSettings(settings);
 }
 

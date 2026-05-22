@@ -342,15 +342,17 @@ void GLRenderer3D::SetScaleFactor(int scale) noexcept
 
 void GLRenderer3D::SetRenderSettings(int scale, bool betterpolygons, int anisoFilterMultiplier) noexcept
 {
-    if (betterpolygons == BetterPolygons && scale == ScaleFactor)
+    Platform::Log(Platform::LogLevel::Info, "GPU3D_OPENGL_CALLED\n");
+    if (betterpolygons == BetterPolygons && scale == ScaleFactor && AnisoMult == anisoFilterMultiplier)
         return;
 
     // TODO set it for 2D renderer
     //CurGLCompositor.SetScaleFactor(scale);
     ScaleFactor = scale;
     BetterPolygons = betterpolygons;
+    AnisoMult = anisoFilterMultiplier;
     AnisoFilterSetting = std::pow(2, anisoFilterMultiplier);
-
+    Platform::Log(Platform::LogLevel::Info, "GPU3D_OPENGL Aniso Mult: %d\n", anisoFilterMultiplier);
     ScreenW = 256 * scale;
     ScreenH = 192 * scale;
 
@@ -813,7 +815,7 @@ void GLRenderer3D::SetupPolygonTexture(const RendererPolygon* poly) const
 
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     if (AnisoFilterSetting > 1 && GLAD_GL_EXT_texture_filter_anisotropic){
-        Log(LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
+        // Log(LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
         glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(MaxAniso, AnisoFilterSetting));
     }
 
@@ -1288,6 +1290,7 @@ void GLRenderer3D::RenderSceneChunk(int y, int h)
 
 void GLRenderer3D::RenderFrame()
 {
+    // Log(LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
     u8 clrBitmapDirty;
     if (!Texcache.Update(clrBitmapDirty) && GPU3D.RenderFrameIdentical)
     {

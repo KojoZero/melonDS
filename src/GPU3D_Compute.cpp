@@ -329,7 +329,7 @@ void ComputeRenderer3D::Reset()
 void ComputeRenderer3D::SetRenderSettings(int scale, bool highResolutionCoordinates, int anisoFilterMultiplier)
 {
     u8 TileScale;
-
+    Platform::Log(Platform::LogLevel::Info, "GPU3D_COMPUTE_CALLED\n");
     if (ScaleFactor != -1)
     {
         DeleteShaders();
@@ -800,9 +800,10 @@ void ComputeRenderer3D::RenderFrame()
                 bool mirrorT = (polygon->TexParam >> 19) & 1;
                 variant.Sampler = Samplers[(wrapS ? (mirrorS ? 2 : 1) : 0) + (wrapT ? (mirrorT ? 2 : 1) : 0) * 3];
                 
-                glSamplerParameteri(variant.Sampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
                 if (AnisoFilterSetting > 1 && GLAD_GL_EXT_texture_filter_anisotropic){
-                    glSamplerParameterf(variant.Sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(MaxAniso, AnisoFilterSetting));
+                    // Log(LogLevel::Info, "Current Aniso: %d\n", std::min(MaxAniso, AnisoFilterSetting));
+                    glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, std::min(MaxAniso, AnisoFilterSetting));
                 }
 
                 if (*textureLastVariant < numVariants && variants[*textureLastVariant] == variant)

@@ -87,6 +87,7 @@ void SoftRenderer::PostSavestate()
 
 void SoftRenderer::SetRenderSettings(RendererSettings& settings)
 {
+    Platform::Log(Platform::LogLevel::Info, "GPU_SOFT_CALLED\n");
     auto rend3d = dynamic_cast<SoftRenderer3D*>(Rend3D.get());
     rend3d->SetThreaded(settings.Threaded);
 }
